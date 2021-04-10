@@ -47,7 +47,16 @@ func New(repoRoot *repo.Repo) (*Bridge, error) {
 		return nil, err
 	}
 
-
+	ctx, cancel := context.WithCancel(context.Background())
+	return &Bridge{
+		repo:    repoRoot,
+		ethMnt:  ethMnt,
+		bscMnt:  bscMnt,
+		storage: boringStorage,
+		logger:  loggers.Logger(loggers.APP),
+		ctx:     ctx,
+		cancel:  cancel,
+	}, nil
 }
 
 func (b *Bridge) Start() error {
